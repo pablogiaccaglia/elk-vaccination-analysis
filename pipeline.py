@@ -1,9 +1,6 @@
-import shutil
 from typing import Optional
 import requests
 from os import getcwd
-
-import constants as c
 
 
 def getFileFormatFromUrl(resourceUrl: str) -> str:
@@ -44,23 +41,3 @@ def writeBytesToFile(byts: bytes, filename: str = None) -> None:
         f.write(byts)
     except:
         pass
-
-
-def updateItalyVaccinationCsv() -> None:
-    try:
-
-        if not c.vaccinationCampaignItalyCsvPath:
-            name = getFileNameFromUrl(resourceUrl = c.vaccinationCampaignItalyCsvUrl)
-            c.vaccinationCampaignItalyCsvPath = c.datasetsFolderPath + '/' + name
-            c.backupVaccinationCampaignCsvPath = c.datasetsFolderPath + '/' + "BACKUP-" + name
-
-        resourceBytes = downloadResource(resourceUrl = c.vaccinationCampaignItalyCsvUrl)
-        writeBytesToFile(byts = resourceBytes, filename = c.vaccinationCampaignItalyCsvPath)
-        writeBytesToFile(byts = resourceBytes, filename = c.backupVaccinationCampaignCsvPath)
-    except:
-        shutil.copyfile(c.backupVaccinationCampaignCsvPath, c.vaccinationCampaignItalyCsvPath)
-
-
-if __name__ == '__main__':
-    c.setupConstants()
-    updateItalyVaccinationCsv()
