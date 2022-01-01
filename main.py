@@ -1,24 +1,35 @@
-from elasticsearch import Elasticsearch
-import configparser
 import constants
-import csvmanipulation
-
-config = configparser.ConfigParser()
-config.read('setup.ini')
-
-client = Elasticsearch(
-        cloud_id = config['DEFAULT']['cloud_id'],
-        api_key = (config['DEFAULT']['apikey_id'], config['DEFAULT']['apikey_key']),
+from csvmanipulation import (
+    ItalyVaccinationCsvManipulation,
+    ItalyVaccineRegistryCsvManipulation,
+    ItalyVaccineDeliveriesCsvManipulation
 )
 
-# print(client.info())
+import elastichutils
 
-constants.setupConstants()
-# updateItalyVaccinationCsv()
-# translateItalyVaccinationCsv()
-# csvmanipulation.createRegionsCoordinatesCsv()
-# csvmanipulation.addRegionCoordinatesToCsv()
-csvmanipulation.csvToJson(
-        csvFilePath = constants.vaccinationCampaignItalyFinalCsvPath,
-        jsonFilePath = constants.vaccinationCampaignItalyFinalJsonPath
-)
+def populateDatabase() -> None:
+    elastichutils.createVaccinationCampaignIndex(connection = constants.elasticConnection)
+    elastichutils.uploadCSVToElastic(
+            csvPath = constants.vaccinationCampaignItalyFinal_mergedCoordinates_CsvPath,
+            document = elastichutils.VaccinationCampaign)
+
+    elastichutils.createVaccineRegistryIndex(connection = constants.elasticConnection)
+    elastichutils.uploadCSVToElastic(
+            csvPath = constants.vaccinesDeliveriesItalyFinal_mergedCoordinates_CsvPath,
+            document = elastichutils.VaccineRegistry)
+
+    elastichutils.createVaccineDeliveriesIndex(connection = constants.elasticConnection)
+    elastichutils.uploadCSVToElastic(
+            csvPath = constants.vaccinesRegistryItalyCsvFinalPath,
+            document = elastichutils.VaccineDeliveries)
+
+def csvRoutines() -> None:
+    ItalyVaccinationCsvManipulation.routine()
+    ItalyVaccineRegistryCsvManipulation.routine()
+    ItalyVaccineDeliveriesCsvManipulation.routine()
+
+
+if __name__ == '__main__':
+    constants.setupConstants()
+    # csvRoutines()
+    populateDatabase()

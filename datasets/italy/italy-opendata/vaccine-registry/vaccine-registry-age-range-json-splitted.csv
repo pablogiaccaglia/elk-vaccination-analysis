@@ -1,0 +1,122 @@
+[
+    {
+        "start_age": "5",
+        "end_age": "11",
+        "total administered": "311899",
+        "male_count": "161642",
+        "female_count": "150257",
+        "first_doses": "311579",
+        "second_doses": "0",
+        "post_infection_doses": "320",
+        "booster_doses": "0",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "12",
+        "end_age": "19",
+        "total administered": "7136178",
+        "male_count": "3664698",
+        "female_count": "3471480",
+        "first_doses": "3610612",
+        "second_doses": "3238641",
+        "post_infection_doses": "116358",
+        "booster_doses": "170567",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "20",
+        "end_age": "29",
+        "total administered": "11382667",
+        "male_count": "5896075",
+        "female_count": "5486592",
+        "first_doses": "5274470",
+        "second_doses": "4891462",
+        "post_infection_doses": "207127",
+        "booster_doses": "1009608",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "30",
+        "end_age": "39",
+        "total administered": "12436076",
+        "male_count": "6318570",
+        "female_count": "6117506",
+        "first_doses": "5663175",
+        "second_doses": "5248696",
+        "post_infection_doses": "209378",
+        "booster_doses": "1314827",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "40",
+        "end_age": "49",
+        "total administered": "16650963",
+        "male_count": "8218517",
+        "female_count": "8432446",
+        "first_doses": "7221407",
+        "second_doses": "6746766",
+        "post_infection_doses": "286188",
+        "booster_doses": "2396602",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "50",
+        "end_age": "59",
+        "total administered": "20030482",
+        "male_count": "9802587",
+        "female_count": "10227895",
+        "first_doses": "8228915",
+        "second_doses": "7608770",
+        "post_infection_doses": "339430",
+        "booster_doses": "3853367",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "60",
+        "end_age": "69",
+        "total administered": "16822868",
+        "male_count": "8187420",
+        "female_count": "8635448",
+        "first_doses": "6663373",
+        "second_doses": "6083485",
+        "post_infection_doses": "231796",
+        "booster_doses": "3844214",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "70",
+        "end_age": "79",
+        "total administered": "14508020",
+        "male_count": "6861473",
+        "female_count": "7646547",
+        "first_doses": "5466153",
+        "second_doses": "5222226",
+        "post_infection_doses": "158195",
+        "booster_doses": "3661446",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "80",
+        "end_age": "89",
+        "total administered": "9728486",
+        "male_count": "4046824",
+        "female_count": "5681662",
+        "first_doses": "3481665",
+        "second_doses": "3412868",
+        "post_infection_doses": "76434",
+        "booster_doses": "2757519",
+        "last_update": "2022-01-01"
+    },
+    {
+        "start_age": "90+",
+        "end_age": "",
+        "total administered": "2154089",
+        "male_count": "640452",
+        "female_count": "1513637",
+        "first_doses": "804081",
+        "second_doses": "775145",
+        "post_infection_doses": "19804",
+        "booster_doses": "555059",
+        "last_update": "2022-01-01"
+    }
+]
