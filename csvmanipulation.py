@@ -170,6 +170,62 @@ class CsvManipulation:
         except Exception as e:
             print(str(e))
 
+    @staticmethod
+    def changeCsvColumnNames(originalCsvPath: str,
+                             modifiedCsvPath: str,
+                             originalColumnNames: list[str],
+                             modifiedColumnNames: list[str]) -> None:
+
+        if not originalColumnNames or not modifiedColumnNames:
+            return
+
+        if not len(originalColumnNames) == len(modifiedColumnNames):
+            return
+
+        with open(originalCsvPath) as originalCSV, open(modifiedCsvPath,
+                                                        'w') as modifiedCSV:
+            reader = csv.reader(originalCSV)
+            writer = csv.writer(modifiedCSV)
+
+            # read the header
+            header = next(reader)
+
+            # modify the column title
+            for i in range(0, len(originalColumnNames)):
+                columnName = originalColumnNames[i]
+
+                for j in range(0, len(header)):
+                    if header[j] == columnName:
+                        header[j] = modifiedColumnNames[i]
+
+            # write the new header out
+            writer.writerow(header)
+
+            # copy all other rows unmodified
+            for row in reader:
+                writer.writerow(row)
+
+    @staticmethod
+    def changeCsvFieldValue(originalCsvPath: str,
+                            modifiedCsvPath: str,
+                            originalFieldValue: str,
+                            modifiedFieldValue: str,
+                            columnName: str) -> None:
+
+        originalCsvReader = csv.DictReader(open(originalCsvPath), delimiter = ",")
+
+        headers = originalCsvReader.fieldnames
+
+        modifiedCsvWriter = csv.DictWriter(open(modifiedCsvPath, 'w'), delimiter = ",", fieldnames = headers)
+
+        modifiedCsvWriter.writeheader()
+
+        for row in originalCsvReader:
+            if row[columnName] == originalFieldValue:
+                row[columnName] = modifiedFieldValue
+
+            modifiedCsvWriter.writerow(row)
+
 
 class ItalyVaccineRegistryCsvManipulation(CsvManipulation):
 
@@ -204,15 +260,15 @@ class ItalyVaccineRegistryCsvManipulation(CsvManipulation):
     @classmethod
     def toJson(cls) -> None:
         cls.csvToJson(
-                csvFilePath = c.vaccinesRegistryItalyCsvFinal_splittedAgeRange_Path,
-                jsonFilePath = c.vaccinesRegistryItalyJsonFinal_splittedAgeRange_Path
+                csvFilePath = c.vaccinesRegistryItalyCsvFinalPath,
+                jsonFilePath = c.vaccinesRegistryItalyJsonFinalPath
         )
 
     @classmethod
     def routine(cls) -> None:
         cls.updateCsv()
         cls.translateCsvHeaders()
-        cls.splitAgeRangeInCsv()
+        shutil.copyfile(c.vaccineRegistryItalyTranslatedCsvPath, c.vaccinesRegistryItalyCsvFinalPath)
         cls.toJson()
 
 
@@ -239,10 +295,22 @@ class ItalyVaccineDeliveriesCsvManipulation(CsvManipulation):
     def addRegionCoordinatesToCsv(cls, separated: bool = True) -> None:
         finalCsvPath = c.vaccinesDeliveriesItalyCsvFinalPath if separated else c.vaccinesDeliveriesItalyFinal_mergedCoordinates_CsvPath
 
+        originalCsvPath = c.tempCsvPath
+
         cls.addRegionCoordinates(
-                originalCsvPath = c.vaccineDeliveriesItalyTranslatedCsvPath,
+                originalCsvPath = originalCsvPath,
                 withCoordinatesCsvPath = finalCsvPath,
                 separated = separated
+        )
+
+    @classmethod
+    def changePfizerPediatricoValues(cls) -> None:
+        cls.changeCsvFieldValue(
+                originalCsvPath = c.vaccineDeliveriesItalyTranslatedCsvPath,
+                modifiedCsvPath = c.tempCsvPath,
+                originalFieldValue = "Pfizer Pediatrico",
+                modifiedFieldValue = "Pfizer/BioNTech",
+                columnName = "supplier"
         )
 
     @classmethod
@@ -252,7 +320,7 @@ class ItalyVaccineDeliveriesCsvManipulation(CsvManipulation):
 
             cls.csvToJson(
                     csvFilePath = c.vaccinesDeliveriesItalyFinal_mergedCoordinates_CsvPath,
-                    jsonFilePath = c.vaccinesDeliveriesItalyJsonFinalPath
+                    jsonFilePath = c.vaccinesDeliveriesItalyFinal_mergedCoordinates_JsonPath
             )
 
         else:
@@ -267,6 +335,7 @@ class ItalyVaccineDeliveriesCsvManipulation(CsvManipulation):
         cls.updateCsv()
         cls.translateCsvHeaders()
 
+        cls.changePfizerPediatricoValues()
         cls.addRegionCoordinatesToCsv(separated = True)
         cls.toJson(withMergedCoordinates = False)
 
@@ -294,14 +363,8 @@ class ItalyVaccinationCsvManipulation(CsvManipulation):
 
     @classmethod
     def addRegionCoordinatesToCsv(cls, separated: bool = True) -> None:
-        finalCsvPath = c.vaccinationCampaignItalyFinalCsvPath if separated else c.vaccinationCampaignItalyFinal_mergedCoordinates_CsvPath
-
-        if separated:
-            shutil.copyfile(c.vaccinationCampaignItalyFinalCsvPath, c.tempCsvPath)
-            originalCsvPath = c.tempCsvPath
-
-        else:
-            originalCsvPath = c.vaccinationCampaignItalyFinalCsvPath
+        finalCsvPath = c.tempCsvPath if separated else c.vaccinationCampaignItalyFinal_mergedCoordinates_CsvPath
+        originalCsvPath = c.vaccinationCampaignItalyTranslatedCsvPath if separated else c.vaccinationCampaignItalyFinalCsvPath
 
         cls.addRegionCoordinates(
                 originalCsvPath = originalCsvPath,
@@ -339,12 +402,22 @@ class ItalyVaccinationCsvManipulation(CsvManipulation):
             )
 
     @classmethod
+    def changePfizerPediatricoValues(cls) -> None:
+        cls.changeCsvFieldValue(
+                originalCsvPath = c.tempCsvPath,
+                modifiedCsvPath = c.vaccinationCampaignItalyFinalCsvPath,
+                originalFieldValue = "Pfizer Pediatrico",
+                modifiedFieldValue = "Pfizer/BioNTech",
+                columnName = "supplier"
+        )
+
+    @classmethod
     def routine(cls) -> None:
         cls.updateCsv()
         cls.translateCsvHeaders()
-        cls.splitAgeRangeInCsv()
 
         cls.addRegionCoordinatesToCsv(separated = True)
+        cls.changePfizerPediatricoValues()
         cls.toJson(withMergedCoordinates = False)
 
         cls.addRegionCoordinatesToCsv(separated = False)
