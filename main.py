@@ -5,24 +5,24 @@ from csvmanipulation import (
     ItalyVaccineDeliveriesCsvManipulation
 )
 
-import elastichutils
+import elasticutils
 
 
 def populateDatabase() -> None:
-    elastichutils.createVaccinationCampaignIndex(connection = constants.elasticConnection)
-    elastichutils.uploadCSVToElastic(
+    elasticutils.createVaccinationCampaignIndex(connection = constants.elasticConnection)
+    elasticutils.uploadCSVToElastic(
             csvPath = constants.vaccinationCampaignItalyFinal_mergedCoordinates_CsvPath,
-            document = elastichutils.VaccinationCampaign)
+            document = elasticutils.VaccinationCampaign)
 
-    elastichutils.createVaccineDeliveriesIndex(connection = constants.elasticConnection)
-    elastichutils.uploadCSVToElastic(
+    elasticutils.createVaccineDeliveriesIndex(connection = constants.elasticConnection)
+    elasticutils.uploadCSVToElastic(
             csvPath = constants.vaccinesDeliveriesItalyFinal_mergedCoordinates_CsvPath,
-            document = elastichutils.VaccineDeliveries)
+            document = elasticutils.VaccineDeliveries)
 
-    elastichutils.createVaccineRegistryIndex(connection = constants.elasticConnection)
-    elastichutils.uploadCSVToElastic(
+    elasticutils.createVaccineRegistryIndex(connection = constants.elasticConnection)
+    elasticutils.uploadCSVToElastic(
             csvPath = constants.vaccinesRegistryItalyCsvFinalPath,
-            document = elastichutils.VaccineRegistry)
+            document = elasticutils.VaccineRegistry)
 
 
 def csvRoutines() -> None:
@@ -33,8 +33,8 @@ def csvRoutines() -> None:
 
 def dailyElasticRoutine() -> None:
     constants.setupConstants()
-    elastichutils.deleteAllCovidIndexes(connection = constants.elasticConnection)
     csvRoutines()
+    elasticutils.deleteAllCovidIndexes(connection = constants.elasticConnection)
     populateDatabase()
 
 

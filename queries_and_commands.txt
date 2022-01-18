@@ -1,0 +1,774 @@
+- 6.1.1: Daily number of overall, first, second and booster vaccine doses
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          
+          long overall_doses = first_doses + second_doses + booster_doses;
+          emit(overall_doses);
+       """
+    }
+  },
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "vaccination-campaign": {
+      "date_histogram": {
+        "field": "administration_date",
+        "calendar_interval": "1d",
+        "format": "yyyy-MM-dd"
+      },
+      "aggs": {
+        "overall_doses": {
+          "sum": {
+            "field": "overall_doses"
+          }
+        },
+        "first_doses": {
+          "sum": {
+            "field": "first_doses"
+          }
+        },
+        "second_doses": {
+          "sum": {
+            "field": "second_doses"
+          }
+        },
+        "booster_doses": {
+          "sum": {
+            "field": "booster_doses"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.2: COVID-19 Overall vaccine doses administered
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses +            booster_doses;
+          emit(overall_doses);
+       """
+    }
+  },
+  "aggs": {
+    "overall_doses": {
+      "sum": {
+        "field": "overall_doses"
+      }
+    },
+    "first_doses": {
+      "sum": {
+        "field": "first_doses"
+      }
+    },
+    "second_doses": {
+      "sum": {
+        "field": "second_doses"
+      }
+    },
+    "booster_doses": {
+      "sum": {
+        "field": "booster_doses"
+      }
+    }
+  }
+}
+
+- 6.1.3: Gender distribution of weekly vaccine doses administered
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          
+          long overall_doses = first_doses + second_doses + booster_doses;
+          emit(overall_doses);
+       """
+    }
+  },
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "vaccination-campaign": {
+      "date_histogram": {
+        "field": "administration_date",
+        "calendar_interval": "1w",
+        "format": "yyyy-MM-dd"
+      },
+      "aggs": {
+        "male_doses": {
+          "sum": {
+            "field": "male_count"
+          }
+        },
+        "female_doses": {
+          "sum": {
+            "field": "female_count"
+          }
+        },
+        "overall_doses": {
+          "sum": {
+            "field": "overall_doses"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.4: Suppliers distribution percentage of all administered vaccines
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          emit(overall_doses);
+       """
+    },
+    "pfizer_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          
+          long effective_overall_doses = 0;
+          
+          String supplier = doc.supplier.value;
+          
+          if(supplier == 'Pfizer/BioNTech'){
+            effective_overall_doses = overall_doses;
+          }
+          
+          
+          emit(effective_overall_doses);
+       """
+    },
+    "moderna_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          
+          long effective_overall_doses = 0;
+          
+          String supplier = doc.supplier.value;
+          
+          if(supplier == 'Moderna'){
+            effective_overall_doses = overall_doses;
+          }
+          
+          emit(effective_overall_doses);
+       """
+    },
+    "janssen_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          
+          long effective_overall_doses = 0;
+          
+          String supplier = doc.supplier.value;
+          
+          if(supplier == 'Janssen'){
+            effective_overall_doses = overall_doses;
+          }
+          
+          emit(effective_overall_doses);
+       """
+    },
+    "vaxzevria (astrazeneca)": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          
+          long effective_overall_doses = 0;
+          
+          String supplier = doc.supplier.value;
+          
+          if(supplier == 'Vaxzevria (AstraZeneca)'){
+            effective_overall_doses = overall_doses;
+          }
+          
+          emit(effective_overall_doses);
+       """
+    }
+  },
+  "aggs": {
+    "data": {
+          "date_histogram": {
+        "field": "administration_date",
+        "fixed_interval": "3650d"
+      },
+    "aggs": {
+      "doses_amount": {
+        "sum": {
+          "field": "overall_doses"
+        }
+      },
+      "pfizer_doses": {
+        "sum": {
+          "field": "pfizer_doses"
+        }
+      },
+      "moderna_doses": {
+        "sum": {
+          "field": "moderna_doses"
+        }
+      },
+      "janssen_doses": {
+        "sum": {
+          "field": "janssen_doses"
+        }
+      },
+      "vaxzevria (astrazeneca)": {
+        "sum": {
+          "field": "vaxzevria (astrazeneca)"
+        }
+      },
+      "pfizer_percentage": {
+        "bucket_script": {
+          "buckets_path": {
+            "overallPfizerDoses": "pfizer_doses",
+            "overallDoses": "doses_amount"
+          },
+          "script": "params.overallPfizerDoses / params.overallDoses *100"
+        }
+      },
+      "moderna_percentage": {
+        "bucket_script": {
+          "buckets_path": {
+            "overallModernaDoses": "moderna_doses",
+            "overallDoses": "doses_amount"
+          },
+          "script": "params.overallModernaDoses / params.overallDoses *100"
+        }
+      },
+      "astrazeneca_percentage": {
+        "bucket_script": {
+          "buckets_path": {
+            "overallAstrazenecaDoses": "vaxzevria (astrazeneca)",
+            "overallDoses": "doses_amount"
+          },
+          "script": "params.overallAstrazenecaDoses / params.overallDoses *100"
+        }
+      },
+      "janssen_percentage": {
+        "bucket_script": {
+          "buckets_path": {
+            "overallJanssenDoses": "janssen_doses",
+            "overallDoses": "doses_amount"
+          },
+          "script": "params.overallJanssenDoses / params.overallDoses *100"
+        }
+      }
+    }
+  }
+  }
+}
+
+- 6.1.5: Number of people that have received at least one dose by age range.
+
+GET /vaccine-registry/_search
+{
+  "query" : {
+      "match_all" : {}
+  },
+  "fields":[
+     "age_group",
+     "first_doses"
+  ],
+  "_source": false
+}
+
+- 6.1.6: Get vaccination status of all age groups
+
+GET /vaccine-registry/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "waiting_second_dose_percentage": {
+      "type": "double",
+      "script": """
+          double first_doses = doc.first_doses.value;
+          double second_doses = doc.second_doses.value;
+          double booster_doses = doc.booster_doses.value;
+          
+          double waiting_second_dose = first_doses-second_doses;
+          double waiting_booster_dose = second_doses-booster_doses;
+          double fully_vaccinated = doc.booster_doses.value;
+          
+          double total = waiting_second_dose + waiting_booster_dose + fully_vaccinated;
+          
+          
+          emit((waiting_second_dose/total) *100);
+       """
+    },
+    "waiting_booster_dose_percentage": {
+      "type": "double",
+      "script": """
+          double first_doses = doc.first_doses.value;
+          double second_doses = doc.second_doses.value;
+          double booster_doses = doc.booster_doses.value;
+          
+          double waiting_second_dose = first_doses-second_doses;
+          double waiting_booster_dose = second_doses-booster_doses;
+          double fully_vaccinated = doc.booster_doses.value;
+          
+          
+          double total = waiting_second_dose + waiting_booster_dose + fully_vaccinated;
+           
+          emit((waiting_booster_dose/total) * 100);
+       """
+    },
+    "fully_vaccinated_percentage": {
+      "type": "double",
+      "script": """
+          double first_doses = doc.first_doses.value;
+          double second_doses = doc.second_doses.value;
+          double booster_doses = doc.booster_doses.value;
+          
+          double waiting_second_dose = first_doses-second_doses;
+          double waiting_booster_dose = second_doses-booster_doses;
+          double fully_vaccinated = doc.booster_doses.value;
+          
+          double total = waiting_second_dose + waiting_booster_dose + fully_vaccinated;
+          
+          emit((booster_doses/total) * 100);
+       """
+    }
+  },
+  "query": {
+    "match_all": {}
+  },
+  "aggs": {
+    "age_group": {
+      "terms": {
+        "field": "age_group"
+      },
+      "aggs": {
+        "fully_vaccinated_precentage": {
+          "sum": {
+            "field": "fully_vaccinated_percentage"
+          }
+        },
+        "waiting_booster_dose_percentage": {
+          "sum": {
+            "field": "waiting_booster_dose_percentage"
+          }
+        },
+        "waiting_second_dose_percentage": {
+          "sum": {
+            "field": "waiting_second_dose_percentage"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.7: Get the total number of not vaccinated people
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "unvaccinated_number": {
+      "date_histogram": {
+        "field": "administration_date",
+        "fixed_interval": "3650d"
+      },
+      "aggs": {
+        "vaccinated": {
+          "sum": {
+            "field": "first_doses"
+          }
+        },
+        "unvaccinated": {
+          "bucket_script": {
+            "buckets_path": {
+              "vaccinated": "vaccinated"
+            },
+            "script": "60328369 - params.vaccinated"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.8: Get the number of vaccinated people that still have to take the booster dose
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "unvaccinated_number": {
+      "date_histogram": {
+        "field": "administration_date",
+        "fixed_interval": "3650d"
+      },
+      "aggs": {
+        "seconds": {
+          "sum": {
+            "field": "second_doses"
+          }
+        },
+        "boosters": {
+          "sum": {
+            "field": "booster_doses"
+          }
+        },
+        "unboosted": {
+          "bucket_script": {
+            "buckets_path": {
+              "seconds": "seconds",
+              "boosters": "boosters"
+            },
+            "script": "params.seconds - params.boosters"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.9: Get the number of people that have been tested positive in the previous 3/6 months and so needed only one dose of vaccine, by age-group
+
+GET /vaccine-registry/_search
+{
+  "query" : {
+      "match_all" : {}
+  },
+  "fields":[
+     "age_group",
+     "post_infection_doses"
+  ],
+  "_source": false
+}
+
+- 6.1.10: Get the male percentage of administered vaccines by date
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          emit(overall_doses);
+       """
+    }
+  },
+
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "vaccination-campaign": {
+      "date_histogram": {
+        "field": "administration_date",
+        "calendar_interval": "1d",
+        "format": "yyyy-MM-dd"
+      },
+      
+    "aggs": {
+          "overall_male_doses": {
+              "sum": {
+                "field": "male_count"
+              }
+              },
+          "overall_doses": {
+            "sum": {
+              "field": "overall_doses"
+            }
+          },
+        "male_count_percentage": {
+          "bucket_script": {
+            "buckets_path": {
+              "overallMaleDoses": "overall_male_doses",
+              "overallDoses": "overall_doses"
+            },
+            "script": "params.overallMaleDoses / params.overallDoses *100"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.11: Get total doses delivered by each supplier
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          long overall_doses = first_doses + second_doses + booster_doses;
+          emit(overall_doses);
+       """
+    }
+  },
+  "aggs": {
+    "top_supplier": {
+      "terms": {
+        "field": "supplier"
+      },
+      "aggs": {
+        "doses_amount": {
+          "sum": {
+            "field": "overall_doses"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.12: Get the increase in percentage of vaccines done related to the previous day
+
+GET /vaccination-campaign/_search
+{
+  "size": 0,
+  "runtime_mappings": {
+    "overall_doses": {
+      "type": "long",
+      "script": """
+          long first_doses = doc.first_doses.value;
+          long second_doses = doc.second_doses.value;
+          long booster_doses = doc.booster_doses.value;
+          
+          long overall_doses = first_doses + second_doses + booster_doses;
+          
+        
+          emit(overall_doses);
+       """
+    }
+  },
+
+
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "vaccination-campaign": {
+      "date_histogram": {
+        "field": "administration_date",
+        "calendar_interval": "1d",
+        "format": "yyyy-MM-dd"
+      },
+      "aggs": {
+        "overall_doses": {
+          "sum": {
+            "field": "overall_doses"
+          }
+        },
+        "overall_doses_derivative": {
+          "derivative": {
+            "buckets_path": "overall_doses"
+          }
+        },
+        
+        "percentage_change": {
+          "bucket_script": {
+            "buckets_path": {
+              "doses_derivative": "overall_doses_derivative",
+              "current_doses": "overall_doses"
+            },
+            "script": """
+            
+            double previous_doses = Math.abs(params.current_doses- params.doses_derivative);
+            
+            return ((params.current_doses - previous_doses)/previous_doses)*100;
+            
+            """
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.13: Get the overall number of doses delivered
+
+GET /vaccine-deliveries/_search
+{
+  "size": 0,
+  "query" : {
+      "match_all" : {}
+  },
+  "aggs": {
+    "delivered-doses": {
+      "sum": {
+        "field": "doses_amount"
+      }
+    }
+  }
+}
+
+- 6.1.14: Get overall weekly vaccine deliveries amount
+
+GET /vaccine-deliveries/_search
+{
+  "size": 0,
+  "query" : {
+      "match_all" : {}
+  },
+
+  "aggs": {
+    "weekly-deliveries": {
+      "date_histogram": {
+        "field": "delivery_date",
+        "calendar_interval": "1w",
+        "format": "yyyy-MM-dd"
+      },
+      "aggs": {
+        "delivered-doses": {
+          "sum": {
+            "field": "doses_amount"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.15: Get weekly vaccine deliveries amount by region name
+
+GET /vaccine-deliveries/_search
+{
+  "size": 0,
+  "aggs": {
+    "region": {
+      "terms": {
+        "field": "region_name",
+        "size": 1000
+      },
+      "aggs": {
+        "overall_doses": {
+          "sum": {
+            "field": "doses_amount"
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.1.16: Get weekly vaccine deliveries amount by manufacturer
+
+GET /vaccine-deliveries/_search
+{
+  "size": 0,
+  "query": {
+    "match_all": {}
+  },
+  "aggs": {
+    "weekly-deliveries": {
+      "date_histogram": {
+        "field": "delivery_date",
+        "calendar_interval": "1w",
+        "format": "yyyy-MM-dd"
+      },
+      "aggs": {
+        "supplier": {
+          "terms": {
+            "field": "supplier",
+            "size": 10
+          },
+          "aggs": {
+            "overall_doses": {
+              "sum": {
+                "field": "doses_amount"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+- 6.2.1: Delete all documents related to 2020 from vaccine campaign index
+
+POST /vaccination-campaign/_delete_by_query
+{
+  "query": {
+    "match": {
+      "administration_date": "*2020*"
+    }
+  }
+}
+
+- 6.2.2: Insert a new document into vaccine registry index
+
+POST /vaccine-registry/_doc
+{
+    "age_group": "05-11",
+    "total_administered": "459251",
+    "male_count": "237256",
+    "female_count": "221995",
+    "first_doses": "458664",
+    "second_doses": "0",
+    "post_infection_doses": "587",
+    "booster_doses": "0",
+    "last_update": "2022-01-07"
+  }
+}

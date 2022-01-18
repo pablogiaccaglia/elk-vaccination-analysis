@@ -1,0 +1,2 @@
+{"attributes":{"fieldAttrs":"{\"male_count\":{\"count\":2}}","fields":"[]","runtimeFieldMap":"{}","timeFieldName":"delivery_date","title":"vaccine-registry*","typeMeta":"{}"},"coreMigrationVersion":"7.16.2","id":"af6b2d70-6ba7-11ec-ad99-294eec578c65","migrationVersion":{"index-pattern":"7.11.0"},"references":[],"type":"index-pattern","updated_at":"2022-01-05T09:19:28.466Z","version":"WzMyMjQxLDFd"}
+{"excludedObjects":[],"excludedObjectsCount":0,"exportedCount":1,"missingRefCount":0,"missingReferences":[]}

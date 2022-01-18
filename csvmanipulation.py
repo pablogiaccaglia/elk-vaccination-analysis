@@ -4,10 +4,9 @@ from enum import Enum
 from typing import Optional
 from typing import Type
 
-import pipeline
+import utils
 import constants as c
 import csv
-import utils
 
 
 class CsvManipulation:
@@ -19,9 +18,9 @@ class CsvManipulation:
             backupOriginalCsvPath: str
     ) -> None:
         try:
-            resourceBytes = pipeline.downloadResource(resourceUrl = url)
-            pipeline.writeBytesToFile(byts = resourceBytes, filename = originalCsvPath)
-            pipeline.writeBytesToFile(byts = resourceBytes, filename = backupOriginalCsvPath)
+            resourceBytes = utils.downloadResource(resourceUrl = url)
+            utils.writeBytesToFile(byts = resourceBytes, filename = originalCsvPath)
+            utils.writeBytesToFile(byts = resourceBytes, filename = backupOriginalCsvPath)
         except:
             shutil.copyfile(backupOriginalCsvPath, originalCsvPath)
 
@@ -363,8 +362,8 @@ class ItalyVaccinationCsvManipulation(CsvManipulation):
 
     @classmethod
     def addRegionCoordinatesToCsv(cls, separated: bool = True) -> None:
-        finalCsvPath = c.tempCsvPath if separated else c.vaccinationCampaignItalyFinal_mergedCoordinates_CsvPath
-        originalCsvPath = c.vaccinationCampaignItalyTranslatedCsvPath if separated else c.vaccinationCampaignItalyFinalCsvPath
+        finalCsvPath = c.vaccinationCampaignItalyFinalCsvPath if separated else c.vaccinationCampaignItalyFinal_mergedCoordinates_CsvPath
+        originalCsvPath = c.tempCsvPath
 
         cls.addRegionCoordinates(
                 originalCsvPath = originalCsvPath,
@@ -404,8 +403,8 @@ class ItalyVaccinationCsvManipulation(CsvManipulation):
     @classmethod
     def changePfizerPediatricoValues(cls) -> None:
         cls.changeCsvFieldValue(
-                originalCsvPath = c.tempCsvPath,
-                modifiedCsvPath = c.vaccinationCampaignItalyFinalCsvPath,
+                originalCsvPath = c.vaccinationCampaignItalyTranslatedCsvPath,
+                modifiedCsvPath = c.tempCsvPath,
                 originalFieldValue = "Pfizer Pediatrico",
                 modifiedFieldValue = "Pfizer/BioNTech",
                 columnName = "supplier"
@@ -416,8 +415,8 @@ class ItalyVaccinationCsvManipulation(CsvManipulation):
         cls.updateCsv()
         cls.translateCsvHeaders()
 
-        cls.addRegionCoordinatesToCsv(separated = True)
         cls.changePfizerPediatricoValues()
+        cls.addRegionCoordinatesToCsv(separated = True)
         cls.toJson(withMergedCoordinates = False)
 
         cls.addRegionCoordinatesToCsv(separated = False)

@@ -1,0 +1,2 @@
+{"attributes":{"fieldAttrs":"{\"end_age\":{\"count\":1}}","fields":"[]","runtimeFieldMap":"{}","timeFieldName":"last_update","title":"vaccine-deliveries*","typeMeta":"{}"},"coreMigrationVersion":"7.16.2","id":"9ec9d2a0-6ba7-11ec-ad99-294eec578c65","migrationVersion":{"index-pattern":"7.11.0"},"references":[],"type":"index-pattern","updated_at":"2022-01-02T08:50:48.240Z","version":"WzMxNjQ4LDFd"}
+{"excludedObjects":[],"excludedObjectsCount":0,"exportedCount":1,"missingRefCount":0,"missingReferences":[]}
