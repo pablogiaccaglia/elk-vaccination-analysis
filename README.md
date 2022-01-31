@@ -64,8 +64,32 @@ From the project's directory run the following commands:
     
 # 👨‍💻 Usage
 
-# 📷 Screenshots
+# 📷 Dashboards
 
+
+Weekly trend of the number of vaccinations       |  Vaccination status of all age groups
+:-------------------------:|:-------------------------:
+![](report/latex/Weekly%20trend%20of%20the%20number%20of%20vaccinations.png)|  ![](report/latex/Vaccination%20status%20of%20all%20age%20groups.png)
+
+---
+
+Total number of doses delivered      |  Number of not vaccinated people
+:-------------------------:|:-------------------------:
+![](report/latex/Total%20number%20of%20doses%20delivered.png)|  ![](report/latex/Number%20of%20not%20vaccinated%20people.png)
+
+---
+
+Gender distribution of weekly vaccine doses administered           |  Doses map
+:-------------------------:|:-------------------------:
+![](report/latex/Gender%20distribution%20of%20weekly%20vaccine%20doses%20administered.png)|  ![](report/latex/Doses_map.png)
+
+---
+
+<h3><p align="center"><b>Distribution of suppliers of all administered vaccines</b></></h3> 
+	
+<p align="center">
+<img src="https://github.com/pablogiaccaglia/elk-vaccination-analysis/blob/master/report/latex/Distribution%20of%20suppliers%20of%20all%20administered%20vaccines.png" width=550px height=520px/>
+</p>
 
 # 📝 License
 
