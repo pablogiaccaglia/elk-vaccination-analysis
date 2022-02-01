@@ -115,6 +115,10 @@ class CsvManipulation:
 
     @staticmethod
     def createRegionsCoordinatesCsv() -> None:
+
+        if not c.gmapsClient:
+            return
+
         lines = open(c.italyRegionsTxtPath).read().splitlines()
 
         with open(c.italyRegionsCoordinatesCsvPath, 'w', newline = '') as file:

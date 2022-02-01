@@ -194,8 +194,11 @@ def setupConstants():
     global googleMapsAPIKEY
     global gmapsClient
     googleMapsAPIKEY = pathsConfigDict['google_maps_api_key']
-    gmapsClient = googlemaps.Client(key = googleMapsAPIKEY)
 
+    try:
+        gmapsClient = googlemaps.Client(key = googleMapsAPIKEY)
+    except:
+        pass
     # -------
 
     pathsConfigDict = config['ELASTIC-API']
