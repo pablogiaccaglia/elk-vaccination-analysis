@@ -11,10 +11,14 @@
 </h1>
 <p align="center">
 <span style="font-size: small; ">
-		<a href="https://www.mongodb.com">MongoDB</a>		 
+		<a href="https://www.elastic.co/what-is/elk-stack">ELK</a>		 
 		•		
 		<a href="Report.pdf">Report</a>   
 	</span>
+</p>
+
+<p align="center">
+  <img width="300" height="300" src="report/latex/ELK-logo.jpeg">
 </p>
 
 Considering the scenario in which there’s the need to build a system suitable for analysis over 
