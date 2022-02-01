@@ -35,11 +35,11 @@ The idea is to provide a tool aware of data updates, reason for why we implement
 - 🚀 [Setup instructions](#-setup-instructions)
 - 📜 [Report](Report.pdf)
 - 👨‍💻 [Usage](#-usage)
-	- [Load Dashboards & Indexes](#-Load-Dashboards-&-Indexes)
-	- [Enable Python Pipeline](#-Enable-Python-Pipeline)  
+-   	- [Enable Python Pipeline](#Enable-Python-Pipeline)  
+	- [Load Dashboards & Indexes](#load-dashboards--indexes)
 - 🗄️ Dumps
   - 🗄️ [Dashboards dump](Exports/Dashboards)
-  - 🗄️ [ES Indexes dump](Exports/Indexes) 
+  - 🗄️ [ES Indexes Patterns dump](Exports/Indexes) 
 - 📷 [Dashboards](#-dashboards)  
 - ♻️ [Data pipeline](#-Data-pipeline)
 - 📝 [License](#-license)
@@ -48,10 +48,10 @@ The idea is to provide a tool aware of data updates, reason for why we implement
 
 ## Required software
 
-- [Python](https://www.python.org/) 3.8 or higher **(only if you want to update data and/or tweak data update routines)**
+- [Python](https://www.python.org/) 3.8 or higher
 - [Elasticsearch](https://www.elastic.co/elasticsearch/)
 - [Kibana](https://www.elastic.co/kibana/)  
-- Python modules in [requirements.txt](requirements.txt) **(only if you want to update data and/or tweak data update routines)**
+- Python modules in [requirements.txt](requirements.txt)
 
 
 # 🚀 Setup instructions
@@ -69,9 +69,26 @@ From the project's directory run the following commands:
     
 # 👨‍💻 Usage
 
+## Enable Python pipeline
+
+The idea behind the provided Python scripts is to enable a small data processing pipeline to daily update vaccination campaign data. More information can be found on the [Data pipeline](#-Data-pipeline) section and on the <a href="Report.pdf">Report</a>
+
+The first step to accomplish is to establish a connection to Elasticsearch.
+The provided code relies on an **Elastic Cloud** based connection, but it can easly customized to serve different connection types, as shown <a href="https://www.elastic.co/guide/en/elasticsearch/client/python-api/master/connecting.html">here</a>.
+
+In the <code><a href="setup.ini">setup.ini</a></code> file you just need to change the following placeholder info with your own:
+
+```dosini
+[ELASTIC-API]
+cloud_id = CLOUD_API
+apikey_id = APIKEY_ID
+apikey_key = APIKEY_KEY
+```
+Then you just need to execute this <code><a href="main.py#L41">main</a></code> method to trigger the daily routine which updates the database.
+
 ## Load Dashboards & Indexes
 
-## Enable Python pipeline
+
 
 # 📷 Dashboards
 
