@@ -5,7 +5,7 @@
 </p>
 <h1 align="center">
 	<strong>
-	ELK Vaccination Campaign Analysis System
+	 💉 ELK Vaccination Campaign Analysis System
 	</strong>
 	<br>
 </h1>
